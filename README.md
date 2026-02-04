@@ -69,7 +69,6 @@ In this project we implement logistic regression from scratch for heart disease 
 
 ## Step 2: Implement Basic Logistic Regression
 
-### Theory
 
 We implemented three core components from scratch:
 
@@ -113,12 +112,12 @@ $$w = w - \alpha \cdot \frac{1}{m} X^T (\hat{y} - y)$$
 
 | Feature | Weight | Interpretation |
 |---------|--------|----------------|
-| Number of vessels fluro | +0.74 | More blocked vessels → higher risk |
-| ST depression | +0.54 | More ST depression → higher risk |
-| Age | +0.27 | Older age → higher risk |
-| BP | +0.16 | Higher blood pressure → higher risk |
-| Cholesterol | +0.09 | Higher cholesterol → slightly higher risk |
-| Max HR | -0.53 | Higher max heart rate → lower risk |
+| Number of vessels fluro | +0.74 | More blocked vessels -> higher risk |
+| ST depression | +0.54 | More ST depression -> higher risk |
+| Age | +0.27 | Older age -> higher risk |
+| BP | +0.16 | Higher blood pressure -> higher risk |
+| Cholesterol | +0.09 | Higher cholesterol -> slightly higher risk |
+| Max HR | -0.53 | Higher max heart rate -> lower risk |
 
 ### Reporting
 
@@ -214,6 +213,46 @@ As λ increases, all weights shrink towards zero (that's the regularization effe
 
 ## Step 5: SageMaker Deployment
 
+### Objective
+
+The goal was to deploy the trained logistic regression model to Amazon SageMaker, enabling real-time inference for heart disease risk prediction. This would allow healthcare applications to send patient data and receive probability scores instantly.
+
+### Planned Approach
+
+1. **Export the best model**: Save weights (`w`) and bias (`b`) as NumPy arrays
+2. **Create SageMaker notebook instance**: Upload training notebook and data
+3. **Build inference handler**: Create a script to load the model and process patient inputs
+4. **Deploy endpoint**: Host the model for real-time predictions
+5. **Test endpoint**: Invoke with sample patient data (e.g., Age=60, Cholesterol=300)
+
+### Deployment Status: Not Completed
+
+The deployment could not be completed due to IAM permission restrictions.
+
+We were using the **LabRole** user provided by AWS Academy, which has limited permissions for security reasons. Specifically, the LabRole lacks the necessary IAM policies to:
+
+- Create SageMaker endpoint configurations
+- Deploy model artifacts to SageMaker hosting
+- Create and manage SageMaker inference endpoints
+- Access certain S3 bucket operations required for model deployment
+
+### Error Encountered
+
+When attempting to create the endpoint, the following permission error was encountered:
+
+```
+AccessDeniedException: User: arn:aws:sts::xxx:assumed-role/LabRole/... 
+is not authorized to perform: sagemaker:CreateEndpoint
+```
+
+### Benefits of Deployment
+
+Even though we couldn't complete the deployment, it's important to note the benefits:
+
+- **Real-time risk scoring**: Healthcare providers could get instant predictions
+- **Scalability**: SageMaker auto-scales based on traffic
+- **Integration**: REST API enables integration with hospital systems
+- **Monitoring**: CloudWatch metrics for model performance tracking
 
 ---
 
@@ -242,7 +281,7 @@ In this project, we implemented logistic regression completely from scratch usin
 2. **Stratified splits**: Keep class balance in train/test sets
 3. **Feature selection**: Some features separate classes better than others
 4. **Regularization**: Not always needed - depends on the overfitting situation
-5. **Medical insight**: The model learned patterns that make clinical sense (blocked vessels → higher risk)
+5. **Medical insight**: The model learned patterns that make clinical sense (blocked vessels -> higher risk)
 
 ### Limitations
 
